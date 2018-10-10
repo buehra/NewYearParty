@@ -19,13 +19,22 @@ class EntryCodeRepository extends ServiceEntityRepository
         parent::__construct($registry, EntryCode::class);
     }
 
-    public function findByCode($code)
+    public function findByUrlHash($code)
     {
         return $this->createQueryBuilder('e')
-            ->where('e.code = :value')
+            ->where('e.urlHash = :value')
             ->andWhere('e.email is null')
             ->setParameter('value', $code)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findBySend(){
+
+        return $this->createQueryBuilder('e')
+            ->where('e.email is not null')
+            ->andWhere('e.sendDate is null')
+            ->getQuery()
+            ->getResult();
     }
 }

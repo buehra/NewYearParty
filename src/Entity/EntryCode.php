@@ -22,6 +22,11 @@ class EntryCode
     private $code;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $urlHash;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;
@@ -80,5 +85,19 @@ class EntryCode
         $this->sendDate = $sendDate;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUrlHash()
+    {
+        return $this->urlHash;
+    }
 
+    /**
+     * @param mixed $urlHash
+     */
+    public function setUrlHash($urlHash): void
+    {
+        $this->urlHash = $urlHash;
+    }
 }

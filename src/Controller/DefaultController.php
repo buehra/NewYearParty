@@ -22,15 +22,15 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @param $code
+     * @param $hash
      * @return Response
-     * @Route("/{code}", name="code_check")
+     * @Route("/{hash}", name="code_check")
      */
-    public function checkCodeAction($code, Request $request)
+    public function checkCodeAction($hash, Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $avCode = $em->getRepository(EntryCode::class)->findByCode($code);
+        $avCode = $em->getRepository(EntryCode::class)->findByUrlHash($hash);
 
         if ($avCode != null){
             $form = $this->createForm(CodeType::class, $avCode);
@@ -42,7 +42,7 @@ class DefaultController extends AbstractController
             ));
         }
 
-        return new Response("LOSE");
+        return $this->render('default/lose.html.twig');
     }
 
     /**
@@ -54,16 +54,20 @@ class DefaultController extends AbstractController
     public function codeSaveAction(EntryCode $code, Request $request){
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(CodeType::class, $code);
-        $form->handleRequest($request);
+        $existingCode = $em->getRepository(EntryCode::class)->find($code->getId());
 
-        if ($form->isSubmitted() && $form->isValid()){
-            $em->persist($code);
-            $em->flush();
+        if ($existingCode->getEmail() == null){
+            $form = $this->createForm(CodeType::class, $code);
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('homepage');
+            if ($form->isSubmitted() && $form->isValid()){
+                $em->persist($code);
+                $em->flush();
+
+                return $this->redirectToRoute('homepage');
+            }
         }
 
-        return new Response("FAILED");
+        return $this->render('default/codeExist.html.twig');
     }
 }

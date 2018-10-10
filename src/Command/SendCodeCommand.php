@@ -50,19 +50,32 @@ class SendCodeCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $codes = $this->em->getRepository(EntryCode::class)->findAll();
+        $codes = $this->em->getRepository(EntryCode::class)->findBySend();
 
         foreach($codes as $code){
             if ($code instanceof EntryCode){
                 $io->comment($code->getEmail());
-                $message = (new \Swift_Message('Test Email'))
-                    ->setFrom('send@example.com')
+
+                $body = "<h1>Herzlichen Glückwunsch</h1>
+                          <p>Dein Gratis-Eintritts Code: <strong>" . $code->getCode() ."</strong></p>
+                           <p>Bitte zeige diesen Code an der Kasse</p><br>
+                           <p>Freundliche Grüsse</p>
+                           <p>OK Neujohrsparty</p>";
+
+                $message = (new \Swift_Message('Neujohrsparty 2019 - Ruswil'))
+                    ->setFrom('neujohrsparty@gmx.ch', 'OK Neujohrsparty')
                     ->setTo($code->getEmail())
-                    ->setBody("Test");
+                    ->setBody($body, "text/html");
 
                 $this->mailer->send($message);
+
+                $code->setSendDate(new \DateTime());
+                $this->em->persist($code);
+
             }
         }
+
+        $this->em->flush();
 
 
 

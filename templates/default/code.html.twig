@@ -1,8 +1,13 @@
+{% extends 'base.html.twig' %}
 {% block body %}
-    Well: {{ code.code }}
+    <h1>Herzlichen Glückwunsch</h1>
+    <p>Du hast einen <strong>Gratis-Eintritt</strong> für die Neujohrsparty 2019 in der Mehrzweckhalle Ruswil gewonnen.</p>
+    <p>Bitte trage deine E-Mail Adresse ein, du wirst in wenigen Minuten dein Gratis-Eintritt per Mail erhalten.</p>
 
     {{ form_start(form, {'action': path('code_save', {'code' : code.id})}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
+
+    <em class="text-danger">Wichtig: Der QR-Code kann nur einmal verwendet werden.</em>
 
 {% endblock %}
