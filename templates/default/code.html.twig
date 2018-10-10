@@ -1,3 +1,8 @@
 {% block body %}
     Well: {{ code.code }}
+
+    {{ form_start(form, {'action': path('code_save', {'code' : code.id})}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
 {% endblock %}
