@@ -24,7 +24,7 @@ class DefaultController extends AbstractController
     /**
      * @param $hash
      * @return Response
-     * @Route("/{hash}", name="code_check")
+     * @Route("/check/{hash}", name="code_check")
      */
     public function checkCodeAction($hash, Request $request)
     {

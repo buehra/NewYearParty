@@ -14,7 +14,8 @@ gulp.task('concatjs', function() {
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/popper.js/dist/umd/popper.js',
         'node_modules/bootstrap/dist/js/bootstrap.min.js',
-        'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js'
+        'node_modules/datatables.net/js/jquery.dataTables.js',
+        'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js',
     ])
         .pipe(concat('global.js'))
         .pipe(gulp.dest('public/js'));
@@ -24,7 +25,7 @@ gulp.task('concatcss', function() {
     return gulp.src([
         'node_modules/bootstrap/dist/css/bootstrap.min.css',
         'node_modules/font-awesome/css/font-awesome.min.css',
-        'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css'
+        'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css',
     ])
         .pipe(concat('global.css'))
         .pipe(gulp.dest('public/css'));
