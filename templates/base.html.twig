@@ -1,51 +1,58 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="neujohrsparty ruswil 2019">
-        <meta name="author" content="Raphael Buehlmann">
-        <title>{% block title %}Neujohrsparty 2019{% endblock %}</title>
-        <link href="{{ asset('css/global.css') }}" rel="stylesheet">
-        <style>
-            /* Move down content because we have a fixed navbar that is 3.5rem tall */
-            body {
-                padding-top: 3.5rem;
-            }
-        </style>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{{ path("homepage") }}">Neujohrsparty 2019</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="neujohrsparty ruswil 2019">
+    <meta name="author" content="Raphael Buehlmann">
+    <title>{% block title %}Neujohrsparty 2019{% endblock %}</title>
+    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+    <style>
+        /* Move down content because we have a fixed navbar that is 3.5rem tall */
+        body {
+            padding-top: 3.5rem;
+        }
+    </style>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="{{ path("homepage") }}">Neujohrsparty 2019</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path("homepage") }}">Home <span class="sr-only">(current)</span></a>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if app.request.attributes.get('_route') == 'homepage' %}active{% endif %}">
+                <a class="nav-link" href="{{ path("homepage") }}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            {% if app.user %}
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'fos_user_security_logout' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path("fos_user_security_logout") }}">Logout</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+            {% else %}
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'fos_user_security_login' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path("fos_user_security_login") }}">Login</a>
                 </li>
-            </ul>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<main role="main">
+    <div class="jumbotron">
+        <div class="container">
+            {% block body %}{% endblock %}
         </div>
-    </nav>
-    <main role="main">
-        <div class="jumbotron">
-            <div class="container">
-        {% block body %}{% endblock %}
-            </div>
-        </div> <!-- /container -->
-    </main>
+    </div> <!-- /container -->
+</main>
 
-    <footer class="container">
-        <p>&copy; Unihockey Ruswil 2018-2019</p>
-    </footer>
+<footer class="container">
+    <p>&copy; Unihockey Ruswil 2018-2019</p>
+</footer>
 
-    <script src="{{ asset('js/global.js') }}"></script>
-        {% block javascripts %}{% endblock %}
-    </body>
+<script src="{{ asset('js/global.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
 </html>

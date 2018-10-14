@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\EntryCode;
+use App\Entity\User;
 use App\Form\CodeType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class DefaultController extends AbstractController
 {
@@ -16,9 +18,11 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        return $this->render('default/index.html.twig', [
-            'controller_name' => 'DefaultController',
-        ]);
+        if($this->getUser()){
+            return $this->redirectToRoute('code_analysis');
+        }
+
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -32,7 +36,7 @@ class DefaultController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $avCode = $em->getRepository(EntryCode::class)->findByUrlHash($hash);
 
-        if ($avCode != null){
+        if ($avCode != null) {
             $form = $this->createForm(CodeType::class, $avCode);
             $form->handleRequest($request);
 
@@ -51,16 +55,17 @@ class DefaultController extends AbstractController
      * @return Response
      * @Route("/{code}/submit", name="code_save", methods={"POST"})
      */
-    public function codeSaveAction(EntryCode $code, Request $request){
+    public function codeSaveAction(EntryCode $code, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $existingCode = $em->getRepository(EntryCode::class)->find($code->getId());
 
-        if ($existingCode->getEmail() == null){
+        if ($existingCode->getEmail() == null) {
             $form = $this->createForm(CodeType::class, $code);
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()){
+            if ($form->isSubmitted() && $form->isValid()) {
                 $em->persist($code);
                 $em->flush();
 
@@ -69,5 +74,29 @@ class DefaultController extends AbstractController
         }
 
         return $this->render('default/codeExist.html.twig');
+    }
+
+
+    /**
+     * @Route("/analysis", name="code_analysis")
+     * @Security("has_role('ROLE_ADMIN')")
+     * @return Response
+     */
+    public function analysisAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entryCodes = $em->getRepository(EntryCode::class)->findAll();
+
+        $countUse = 0;
+
+        foreach ($entryCodes as $code){
+            if ($code instanceof EntryCode && !empty($code->getEmail())) $countUse++;
+        }
+
+        return $this->render('default/analysis.html.twig', array(
+            'entryCodes' => $entryCodes,
+            'countUse' => $countUse
+        ));
     }
 }

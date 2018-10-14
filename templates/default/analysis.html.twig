@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-xl-6 col-sm-6 mb-6">
+            <div class="card text-white bg-success  o-hidden h-100">
+                <div class="card-body">
+                    <div class="mr-5">{{ countUse }} Codes wurden eingelöst</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-table" aria-hidden="true"></i> Daten
+        </div>
+        <div class="card-body">
+            <table id="code_table" class="table table-striped table-bordered nowrap" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>E-Mail</th>
+                    <th>Send Datum</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for code in entryCodes %}
+                    <tr>
+                        <td>{{ code.code }}</td>
+                        <td>{{ code.email }}</td>
+                        <td>{{ code.sendDate|showDate }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#code_table').DataTable({
+            });
+        });
+    </script>
+
+{% endblock %}
