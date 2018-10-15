@@ -49,10 +49,20 @@
 </main>
 
 <footer class="container">
-    <p>&copy; Unihockey Ruswil 2018-2019</p>
+    <p>&copy; Unihockey Ruswil 2018</p>
 </footer>
 
 <script src="{{ asset('js/global.js') }}"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40620803-3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-40620803-3');
+</script>
+
 {% block javascripts %}{% endblock %}
 </body>
 </html>
