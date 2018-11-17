@@ -7,7 +7,7 @@
     {{ form_start(form, {'action': path('code_save', {'code' : code.id})}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
-
+    <em>Informationen, die Sie an uns senden, werden vertraulich behandelt und nicht an Dritte weitergegeben.</em><br>
     <em class="text-danger">Wichtig: Der QR-Code kann nur einmal verwendet werden.</em>
 
 {% endblock %}

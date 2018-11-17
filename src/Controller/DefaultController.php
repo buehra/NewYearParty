@@ -99,4 +99,13 @@ class DefaultController extends AbstractController
             'countUse' => $countUse
         ));
     }
+
+    /**
+     * @Route("/privacy-statement", name="privacy_statement")
+     * @return Response
+     */
+    public function datenschutz(){
+
+        return $this->render('default/datenschutz.html.twig');
+    }
 }
