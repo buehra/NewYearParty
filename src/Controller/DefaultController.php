@@ -33,6 +33,8 @@ class DefaultController extends AbstractController
     public function checkCodeAction($hash, Request $request)
     {
 
+        return $this->redirectToRoute("homepage");
+
         $em = $this->getDoctrine()->getManager();
         $avCode = $em->getRepository(EntryCode::class)->findByUrlHash($hash);
 
@@ -57,6 +59,9 @@ class DefaultController extends AbstractController
      */
     public function codeSaveAction(EntryCode $code, Request $request)
     {
+
+        return $this->redirectToRoute("homepage");
+
         $em = $this->getDoctrine()->getManager();
 
         $existingCode = $em->getRepository(EntryCode::class)->find($code->getId());
